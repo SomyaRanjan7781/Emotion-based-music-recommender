@@ -1,11 +1,13 @@
+import * as faceapi from 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.esm.js';
+
+// ✅ Your existing code below
 const video = document.getElementById('video');
 const captureBtn = document.getElementById('capture');
 const musicListDiv = document.getElementById('musicList');
 
-// Load models from public URL (unpkg) instead of /models for Vercel compatibility
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models'),
-  faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models')
+  faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+  faceapi.nets.faceExpressionNet.loadFromUri('/models')
 ]).then(startVideo).catch(err => console.error("Model load error:", err));
 
 function startVideo() {
@@ -29,7 +31,7 @@ captureBtn.addEventListener('click', async () => {
 
     musicListDiv.innerHTML = `<p>Detected Emotion: <strong>${emotion}</strong></p><p>Fetching songs...</p>`;
 
-    fetch('https://somya-27-04-03--emotion-based-music-recommender.hf.space/run/predict', {
+    fetch('https://huggingface.co/spaces/somya-27-04-03/Emotion-based-music-recommender', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ emotion: emotion })
