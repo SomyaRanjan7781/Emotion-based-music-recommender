@@ -1,6 +1,3 @@
-import * as faceapi from 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.esm.js';
-
-// ✅ Your existing code below
 const video = document.getElementById('video');
 const captureBtn = document.getElementById('capture');
 const musicListDiv = document.getElementById('musicList');
