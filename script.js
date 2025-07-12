@@ -1,12 +1,10 @@
 const video = document.getElementById('video');
 const captureBtn = document.getElementById('capture');
 const musicListDiv = document.getElementById('musicList');
-
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
   faceapi.nets.faceExpressionNet.loadFromUri('/models')
 ]).then(startVideo).catch(err => console.error("Model load error:", err));
-
 function startVideo() {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
@@ -18,16 +16,12 @@ function startVideo() {
       musicListDiv.innerHTML = "<p>Camera access denied or unavailable.</p>";
     });
 }
-
 captureBtn.addEventListener('click', async () => {
   const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
-
   if (detections && detections.expressions) {
     const expressions = detections.expressions;
     const emotion = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
-
     musicListDiv.innerHTML = `<p>Detected Emotion: <strong>${emotion}</strong></p><p>Fetching songs...</p>`;
-
     fetch('https://huggingface.co/spaces/somya-27-04-03/Emotion-based-music-recommender', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
